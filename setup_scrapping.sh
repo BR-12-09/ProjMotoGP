@@ -11,7 +11,7 @@ echo "✅ Scrapy 'seasons' terminé."
 scrapy crawl categories -o categories.json || { echo "❌ Erreur lors de l'exécution de 'categories'."; exit 1; }
 echo "✅ Scrapy 'categories' terminé."
 
-scrapy crawl categoriestm -o ctegoriestm.json || { echo "❌ Erreur lors de l'exécution de 'categoriestm'."; exit 1; }
+scrapy crawl categoriestm -o categoriestm.json || { echo "❌ Erreur lors de l'exécution de 'categoriestm'."; exit 1; }
 echo "✅ Scrapy 'categoriestm' terminé."
 
 scrapy crawl riders -o riders.json || { echo "❌ Erreur lors de l'exécution de 'riders'."; exit 1; }
