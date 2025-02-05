@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ rider.name }} {{ rider.surname }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #181818;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #e10600;
+        }
+        .container {
+            display: flex;
+            max-width: 1100px;
+            margin: auto;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .column {
+            background-color: #202020;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .photo-box {
+            flex: 1;
+            text-align: center;
+        }
+        .photo-box img {
+            width: 230px;
+            height: auto;
+            border-radius: 10px;
+            border: 3px solid #e10600;
+        }
+        .info-box {
+            flex: 1;
+            text-align: left;
+        }
+        .stats-box {
+            flex: 1;
+            text-align: left;
+        }
+        h2 {
+            color: #e10600;
+            font-size: 1.2em;
+            border-bottom: 2px solid #e10600;
+            padding-bottom: 5px;
+        }
+        p {
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+        .flag {
+            width: 30px;
+            height: auto;
+            vertical-align: middle;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+        .team-logo {
+            width: 100px;
+            margin-top: 10px;
+        }
+        .card {
+            background: #202020;
+            border-radius: 10px;
+            padding: 20px;
+            width: 50%;
+            margin: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .card img {
+            width: 150px;
+            border-radius: 50%;
+        }
+        a {
+            color: #e10600;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav {
+            background-color: #202020;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #e10600; /* Rouge MotoGP au survol */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/"> ACCUEIL</a></li>
+                <li><a href="riders"> PILOTES</a></li>
+                <li><a href="teams"> ÉQUIPES</a></li>
+                <li><a href="recherche"> RECHERCHER</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>{{ rider.name }} {{ rider.surname }}</h1>
+
+    <div class="container">
+        <!-- Créer un dictionnaire associant chaque team_id à son team.name -->
+        {% set teams_dict = {} %}
+        {% for team in teams %}
+            {% set _ = teams_dict.update({team._id: team.name}) %}
+        {% endfor %}
+        <!-- Colonne 1: Photo du pilote -->
+        <div class="column photo-box">
+            <img src="{{ rider.picture }}" alt="Pas de photo de {{ rider.name }} {{ rider.surname }}">
+        </div>
+        <!-- Colonne 2: Informations personnelles -->
+        <div class="column info-box">
+            <h2>Informations personnelles</h2>
+            <p><strong>Nationalité :</strong> {{ rider.country }}
+                <img class="flag" src="{{ rider.country_flag }}" 
+                    alt="Drapeau de {{ rider.nationality }}">
+            </p>
+            <p><strong>Date de naissance :</strong> {{ rider.birth_date }}</p>
+                <p><strong>Lieu de naissance :</strong> {{ rider.birth_city }}</p>
+                <p><strong>Taille :</strong> {% if rider.taille %}{{ rider.taille }} cm{% else %} None {% endif %}</p>
+                <p><strong>Poids :</strong> {% if rider.poids %}{{ rider.poids }} kg{% else %} None {% endif %}</p>
+        </div>
+        <!-- Colonne 3: Statistiques et équipe -->
+        <div class="column stats-box">
+            <h2>Statistiques de carrière</h2>
+            <p><strong>Années :</strong> {{ rider.start_year }} - {{ rider.retired_year if rider.retired else 'Toujours en activité' }}</p>
+                <p><strong>Championnats du monde :</strong> {{ rider.world_champion_wins }}</p>
+                <p><strong>Victoires en GP :</strong> {{ rider.grand_prix_victories }}</p>
+                <p><strong>Podiums :</strong> {{ rider.podiums }}</p>
+                <p><strong>Poles :</strong> {{ rider.poles }}</p>
+                <p><strong>Courses disputées :</strong> {{ rider.races }}</p>
+
+            <h2>Équipe actuelle</h2>
+            <!-- Vérification et affichage du nom de l'équipe -->
+            {% if '2025' in rider.season_team.keys() %}
+                {% set team_id = rider.season_team["2025"].team_id %}
+                {% set team_name = teams_dict.get(team_id, "Unknown Team") %}
+                {% if team_name %}
+                    <p><strong>Nom :</strong> {{ team_name }}</p>
+                {% endif %}
+            {% else %}
+                <p>Aucune équipe trouvée actuellement</p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

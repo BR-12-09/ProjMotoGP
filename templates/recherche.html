@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche MotoGP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #181818;
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+        h1 {
+            color: #e10600;
+            text-align: center;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .rider-card {
+            background: #202020;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .rider-card:hover {
+            transform: scale(1.05);
+        }
+        .rider-image img {
+            width: 100%;
+            height: auto;
+            border-bottom: 2px solid #e10600;
+        }
+        .rider-info {
+            padding: 15px;
+        }
+        .rider-info h2 {
+            font-size: 1.2em;
+            margin: 5px 0;
+        }
+        .rider-info p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #cccccc;
+        }
+        .rider-info .flag {
+            width: 25px;
+            height: auto;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        /* Style du champ de texte */
+        input[type="text"] {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        input[type="text"]:focus {
+            border-color: #e10600;
+            box-shadow: 0 0 5px #e10600;
+        }
+        /* Style du bouton */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #e10600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        button:hover {
+            background-color: #e10600;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+        nav {
+            background-color: #202020;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #e10600; /* Rouge MotoGP au survol */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/"> ACCUEIL</a></li>
+                <li><a href="riders"> PILOTES</a></li>
+                <li><a href="teams"> ÉQUIPES</a></li>
+                <li><a href="recherche"> RECHERCHER</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>Recherche des pilotes MotoGP</h1>
+    <form method="POST">
+        <input type="text" name="query" placeholder="Nom du pilote" value="{{ query }}">
+        <button class="btn-search" type="submit">Rechercher</button>
+    </form>
+    
+    {% if riders %}
+        <h2>Résultats pour "{{ query }}"</h2>
+        <ul>
+        {% for rider in riders %}
+            <li>
+                <a href="{{ url_for('get_rider_details', rider_id=rider['_source']['id']) }}">
+                    <strong>{{ rider["_source"]["name"] }} {{ rider["_source"]["surname"] }}</strong>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% elif query %}
+        <p>Aucun résultat trouvé pour "{{ query }}"</p>
+    {% endif %}
+</body>
+</html>

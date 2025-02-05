@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"  # Exposer le port de MongoDB
+    volumes:
+      - mongo_data:/data/db  # Persister les données de MongoDB
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m  # Configurations de mémoire
+      - xpack.security.enabled=false  # Désactiver la sécurité
+    ports:
+      - "9200:9200"  # Exposer le port d'Elasticsearch
+    volumes:
+      - es_data:/usr/share/elasticsearch/data  # Persister les données d'Elasticsearch
+
+volumes:
+  mongo_data:
+  es_data:
