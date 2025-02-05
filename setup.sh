@@ -2,12 +2,6 @@
 
 set -e  # Arrête le script immédiatement en cas d'erreur
 
-echo "🚀 Démarrage du setup..."
-
-# Activer l'environnement virtuel
-echo "🔹 Activation de l'environnement virtuel..."
-pipenv shell
-
 # Installer les dépendances
 echo "🔹 Installation des dépendances..."
 pipenv install --dev || { echo "❌ Erreur lors de l'installation des dépendances."; exit 1; }
