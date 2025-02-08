@@ -28,6 +28,8 @@ Lancer le fichier setup_environnement.sh avec la commande :
 
 ### 3️⃣ Installation des dépendances et les services (MongoDB + Elasticsearch)
 
+Verfifier que vous n'avez pas dans docker des conteneurs avec le même nom mongocb et elasticsearch.
+
 Lancer le fichier setup_docker.sh avec la commande : 
 
 ./setup_docker.sh
@@ -39,6 +41,8 @@ Lancer le fichier setup_scrapping.sh avec la commande :
 ./setup_scrapping.sh
 
 L'application sera accessible à l'adresse : http://127.0.0.1:5000/
+
+Attention si vous voulez relancer toute la manipulation il vous faut au moins supprimer les conteneurs sinon il y'aura un problème car ils existent déjà, de plus les fichiers json doivent être supprimer sinon il y aurais les informations en doubles.
 
 ## ⚙️ Choix techniques
 
